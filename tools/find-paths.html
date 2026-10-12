@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nano Wiki Race — Path Finder</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      color: #222;
+    }
+    h1 { margin-top: 0; }
+    textarea {
+      width: 100%;
+      min-height: 7rem;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+    .row { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .col { flex: 1; min-width: 300px; }
+    label { font-weight: 600; display: block; margin-top: 0.5rem; }
+    input[type=text], input[type=number] {
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 0.3rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    #status {
+      font-family: monospace;
+      background: #f3f3f3;
+      padding: 0.5rem;
+      margin: 1rem 0;
+      max-height: 10rem;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid #eee; }
+    th { background: #f9f9f9; }
+    tr.too-far td { color: #999; }
+    .path-cell { font-family: monospace; font-size: 0.9rem; }
+    .fact-cell input { width: 100%; font-family: inherit; font-size: 0.9rem; }
+    .nano-cell input { width: 100%; font-family: inherit; font-size: 0.9rem; margin-bottom: 2px; }
+    .nano-cell .emoji-in { width: 3rem; margin-right: 0.25rem; }
+    .nano-cell .size-in { width: calc(100% - 3.5rem); }
+  </style>
+</head>
+<body>
+  <h1>Nano Wiki Race — Path Finder</h1>
+  <p>
+    Runs a bidirectional search for each start × target pair, finding paths of
+    length 1 or 2 (and optionally 3). Open your browser's dev tools to see
+    detailed progress. Be polite to Wikipedia: keep concurrency low.
+  </p>
+
+  <div class="row">
+    <div class="col">
+      <label>Starts (one per line)</label>
+      <textarea id="starts">Nanotechnology
+Atom
+Molecule
+Carbon nanotube
+Graphene
+Buckminsterfullerene
+Electron microscope
+DNA
+Virus
+Gecko
+Lotus effect
+Butterfly
+Sunscreen</textarea>
+    </div>
+    <div class="col">
+      <label>Targets (one per line) — big things, to contrast with the nano starts</label>
+      <textarea id="targets">Dinosaur
+Blue whale
+Sun
+Volcano
+Ocean
+Mount Everest
+Giant sequoia
+Elephant
+Whale
+Mountain
+Pacific Ocean
+Earth
+Moon
+Pyramid
+Skyscraper</textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Wiki host</label>
+      <input type="text" id="host" value="en.wikipedia.org">
+    </div>
+    <div>
+      <label>Max concurrent requests</label>
+      <input type="number" id="concurrency" value="2" min="1" max="6">
+    </div>
+    <div>
+      <label>Try length-3 paths</label>
+      <input type="checkbox" id="try3"> <small>(much slower)</small>
+    </div>
+  </div>
+
+  <div>
+    <button id="run-btn">Search</button>
+    <button id="stop-btn" disabled>Stop</button>
+    <button id="download-btn" disabled>Download pairs.js</button>
+  </div>
+
+  <div id="status"></div>
+
+  <table id="results">
+    <thead>
+      <tr>
+        <th>Keep</th>
+        <th>Start</th>
+        <th>Target</th>
+        <th>Clicks</th>
+        <th>Path</th>
+        <th>Fact (optional)</th>
+        <th>Nano visuals (optional)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="find-paths.js"></script>
+</body>
+</html>

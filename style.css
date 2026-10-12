@@ -1,0 +1,600 @@
+/* Nano Wiki Race — shared styles for player and display. */
+
+:root {
+  --bg: #0e1116;
+  --panel: #161a22;
+  --fg: #f4f6fb;
+  --muted: #9aa3b2;
+  --accent: #ffd166;
+  --accent2: #06d6a0;
+  --warn: #ef476f;
+  --link: #4cc9f0;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+body { display: flex; flex-direction: column; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* =============================================================
+   PLAYER
+   ============================================================= */
+
+body.player { overflow: hidden; }
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen[hidden] { display: none; }
+
+/* --- READY --- */
+#ready-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.challenge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.challenge-item {
+  background: var(--panel);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  line-height: 1.2;
+}
+
+.challenge-item .label { display: block; font-size: 0.5em; color: var(--muted); }
+.challenge .arrow { font-size: clamp(2rem, 6vw, 4rem); color: var(--accent); }
+
+/* Short task description shown on the player READY screen so a newcomer
+   stepping up to the START button sees what wiki-racing actually is. */
+.howto {
+  max-width: 48rem;
+  margin: 0 auto 1.5rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  color: var(--fg);
+  text-align: center;
+  line-height: 1.4;
+}
+
+#start-btn {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  padding: 1.5rem 4rem;
+  background: var(--accent);
+  color: #1b1500;
+  border: none;
+  border-radius: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 10px 0 #a37a00;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+  margin-bottom: 1rem;
+}
+#start-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 4px 0 #a37a00;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 2px solid var(--muted);
+  color: var(--muted);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin: 0.25rem;
+}
+.secondary-btn:hover { color: var(--fg); border-color: var(--fg); }
+
+.hint { color: var(--muted); margin-top: 1rem; font-size: 1rem; }
+
+/* --- COUNTDOWN --- */
+#countdown-screen {
+  align-items: center;
+  justify-content: center;
+}
+#countdown-number {
+  font-size: clamp(10rem, 30vw, 25rem);
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+/* --- PLAYING --- */
+#playing-screen { flex-direction: column; }
+
+#playing-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  padding: 0.75rem 1.5rem;
+  border-bottom: 3px solid var(--accent);
+  font-size: 1.5rem;
+  gap: 1rem;
+}
+#playing-header .target-chip {
+  background: var(--bg);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+#playing-header .target-chip strong { color: var(--accent); margin-left: 0.5rem; }
+
+#playing-timer {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent2);
+  min-width: 2.5em;
+  text-align: right;
+}
+#playing-timer.warn { color: var(--warn); }
+
+#article {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 2rem 4rem;
+  font-size: 1.25rem;
+  line-height: 1.55;
+  background: #fff;
+  color: #111;
+}
+#article .wiki-article { max-width: 920px; margin: 0 auto; }
+#article h1, #article h2, #article h3 { color: #000; margin-top: 1.4em; }
+#article a { color: #0366d6; text-decoration: underline; }
+#article a:hover { background: #ffeb99; }
+#article a.new { color: #999; text-decoration: line-through; cursor: default; }
+#article img { max-width: 100%; height: auto; }
+#article table { max-width: 100%; }
+#article .thumb, #article .infobox {
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-radius: 0.5rem;
+}
+#article .infobox { float: right; max-width: 320px; margin-left: 1rem; }
+
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--warn);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 1.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 100;
+}
+#toast.show { opacity: 1; }
+
+#article .loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.5rem;
+}
+
+/* --- ENDED --- */
+#end-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(14, 17, 22, 0.95);
+  padding: 2rem;
+}
+#end-screen .big {
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+#end-screen .big.win { color: var(--accent2); }
+#end-screen .big.timeout { color: var(--accent); }
+#end-screen .sub {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--fg);
+}
+
+/* Footer */
+.player-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.75rem;
+  padding: 0.25rem;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* =============================================================
+   DISPLAY
+   ============================================================= */
+
+body.display {
+  padding: 2rem 3rem;
+  font-size: 2.5rem;
+}
+
+#display-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.d-header {
+  font-size: clamp(2.5rem, min(7vw, 9vh), 6rem);
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.d-header .arrow { color: var(--accent); margin: 0 1rem; }
+
+.d-subhead {
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(1.5rem, min(3vw, 4vh), 2.5rem);
+  margin-top: -0.5rem;
+}
+
+.d-timer-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.d-timer {
+  font-size: clamp(4rem, min(15vw, 20vh), 14rem);
+  font-weight: 800;
+  color: var(--accent2);
+  line-height: 1;
+}
+.d-timer.warn { color: var(--warn); }
+.d-timerbar {
+  width: 100%;
+  height: 1.5rem;
+  background: var(--panel);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.d-timerbar-fill {
+  height: 100%;
+  background: var(--accent2);
+  transition: width 0.1s linear, background 0.3s;
+}
+.d-timerbar-fill.warn { background: var(--warn); }
+
+.d-path-live {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 1rem;
+  min-height: 4rem;
+}
+.d-chip {
+  background: var(--panel);
+  color: var(--fg);
+  padding: 0.5rem 1.25rem;
+  border-radius: 1rem;
+  font-size: clamp(1.5rem, min(2.5vw, 3vh), 2.5rem);
+  border: 2px solid var(--muted);
+}
+.d-chip.start { border-color: var(--accent2); }
+.d-chip.target { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.d-chip-arrow { color: var(--accent); font-size: clamp(1.5rem, min(2.5vw, 3vh), 2.5rem); align-self: center; }
+
+.d-countdown {
+  /* Max tuned to leave room for header + scale bar + fact card on a
+     typical 850–1080 tall viewport without clipping. Still a chunky
+     3·2·1 readable from across a room. */
+  font-size: clamp(5rem, min(25vw, 22vh), 10rem);
+  font-weight: 800;
+  color: var(--accent);
+  text-align: center;
+  line-height: 1;
+}
+
+.d-prompt {
+  text-align: center;
+  font-size: clamp(1.75rem, min(3.5vw, 4vh), 2.75rem);
+  color: var(--accent);
+  font-weight: 700;
+}
+.d-prompt .d-tagline {
+  font-size: 0.65em;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin-left: 0.4em;
+}
+
+/* READY screen: center the whole group (prompt / tagline / headline /
+   subhead / factcard) vertically so there's equal breathing room top
+   and bottom instead of a big gap above and a tight bottom edge. */
+.d-ready-stack {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 0;
+}
+.d-ready-stack .d-factcard {
+  margin-top: 0;  /* let the stack center the whole group, not pin card to bottom */
+}
+
+/* Reveal */
+.d-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1 1 auto;
+  min-height: 0;   /* allow SVG inside to shrink below its intrinsic size */
+  /* Match the scale bar's max width + centering so the two graphics
+     visually align on wide displays instead of the reveal running to
+     the full window edge while the scale bar sits capped. */
+  width: min(2000px, 100%);
+  align-self: center;
+}
+.d-reveal-caption {
+  text-align: center;
+  font-size: clamp(1.5rem, min(3.5vw, 4.5vh), 3rem);
+  color: var(--fg);
+  flex-shrink: 0;  /* never let the caption get clipped by SVG above */
+}
+.d-reveal-caption .wow { color: var(--accent); font-weight: 800; display: block; font-size: 1.3em; }
+/* Scale bar — horizontal log axis plotting the pair's start and target
+   on a fixed "atom → Sun" range so kids can see the scale jump. */
+.d-scalebar {
+  align-self: center;
+  /* ViewBox height is pinned at 170 px in display.js, so the scale bar's
+     height stays stable at 170 px regardless of its width — no vh cap
+     needed, and the width can grow freely with the window up to the
+     readability limit. */
+  width: min(2000px, 100%);
+}
+.d-scalebar svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.d-scalebar-axis {
+  stroke: var(--muted);
+  stroke-width: 2;
+}
+.d-scalebar-tick {
+  stroke: var(--muted);
+  stroke-width: 2;
+}
+.d-scalebar-stem {
+  stroke: var(--muted);
+  stroke-width: 1;
+  opacity: 0.5;
+  stroke-dasharray: 2 3;
+}
+.d-scalebar-anchorlabel {
+  fill: var(--muted);
+  font-size: 16px;
+  text-anchor: middle;
+  font-weight: 500;
+}
+.d-scalebar-halo {
+  opacity: 0.25;
+}
+.d-scalebar-halo.start { fill: var(--accent2); }
+.d-scalebar-halo.target { fill: var(--accent); }
+.d-scalebar-dot {
+  stroke: var(--panel);
+  stroke-width: 3;
+}
+.d-scalebar-dot.start  { fill: var(--accent2); }
+.d-scalebar-dot.target { fill: var(--accent); }
+.d-scalebar-pairdesc {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+.d-scalebar-pairdesc.start  { fill: var(--accent2); }
+.d-scalebar-pairdesc.target { fill: var(--accent); }
+.d-scalebar-pairlabel {
+  font-size: 22px;
+  font-weight: 700;
+}
+.d-scalebar-pairlabel.start  { fill: var(--accent2); }
+.d-scalebar-pairlabel.target { fill: var(--accent); }
+
+/* Fact card — visible on every phase while a pair is loaded. */
+.d-factcard {
+  position: relative;
+  align-self: center;
+  /* Same width cap as reveal + scale bar so the three big-screen
+     graphics share one visual column on wide displays. */
+  width: min(2000px, 100%);
+  background: var(--panel);
+  border: 2px solid #2a3140;
+  border-radius: 1rem;
+  padding: 1.25rem 1.75rem 1.25rem 2.4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 1.75rem;
+  margin-top: auto;
+}
+.d-factcard::before {
+  content: "";
+  position: absolute;
+  left: 0.6rem;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.d-factcard-visualcol {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  /* Width is driven by viewport HEIGHT so widening the window doesn't
+     make the image taller (which would steal vertical space from the
+     reveal). Capped at 40% of the parent fact card so on narrow screens
+     the image can't dominate the text column.
+     Tuned down from 30vh → 25vh to give the reveal enough vertical to
+     keep showing lane labels on windowed test sizes. On full-screen big
+     displays the image is still prominent. */
+  width: clamp(10rem, 25vh, 36rem);
+  max-width: 40%;
+}
+.d-factcard-visual {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.d-factcard-emoji {
+  font-size: clamp(5rem, min(10vw, 15vh), 9rem);
+  line-height: 1;
+}
+.d-factcard-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.d-factcard-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.d-factcard-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.d-factcard-size {
+  font-size: clamp(2rem, min(4vw, 5vh), 3.25rem);
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.d-factcard-scalelabel {
+  font-size: clamp(1.2rem, min(2.1vw, 2.6vh), 1.7rem);
+  color: var(--muted);
+  font-weight: 500;
+}
+.d-factcard-fact {
+  font-size: clamp(1.25rem, min(2.3vw, 2.9vh), 1.9rem);
+  color: var(--fg);
+  line-height: 1.35;
+}
+.d-factcard-credit {
+  font-size: clamp(0.7rem, min(0.9vw, 1.2vh), 0.9rem);
+  color: var(--muted);
+  text-align: left;
+  line-height: 1.3;
+}
+
+/* Narrow-viewport fallback: on tablet-portrait and smaller, stack the
+   image above the text column instead of fighting for horizontal space. */
+@media (max-width: 640px) {
+  .d-factcard {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .d-factcard-visualcol {
+    width: 100%;
+    align-self: center;
+    max-width: 24rem;
+  }
+}
+.d-reveal-svg {
+  width: 100%;
+  /* flex-basis: 0 instead of auto so the SVG's initial size ignores the
+     viewBox intrinsic height. Without this, when we later swap viewBox,
+     the SVG's "intrinsic" size can disagree with the flex-allocated size
+     and preserveAspectRatio=meet draws horizontal letterbox bars. */
+  flex: 1 1 0;
+  min-height: 0;
+}
+.d-lane-label {
+  fill: var(--muted);
+  font-weight: 500;
+}
+.d-node {
+  fill: var(--panel);
+  stroke: var(--muted);
+  stroke-width: 3;
+}
+.d-node.start { stroke: var(--accent2); }
+.d-node.target { stroke: var(--accent); }
+.d-node-text {
+  fill: var(--fg);
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-weight: 600;
+}
+.d-edge { stroke: var(--muted); stroke-width: 4; fill: none; }
+.d-edge.dashed { stroke-dasharray: 8 10; stroke: var(--warn); }
+.d-edge.your { stroke: var(--link); }
+.d-edge.computer { stroke: var(--accent2); }
+.d-edge.jump { stroke-dasharray: 2 8; opacity: 0.6; }
+
+.d-node.ellipsis {
+  fill: transparent;
+  stroke: var(--muted);
+  stroke-width: 3;
+  stroke-dasharray: 4 6;
+  opacity: 0.7;
+}
+.d-node-text.ellipsis { fill: var(--muted); font-weight: 700; }
+.d-node-text.sub { fill: var(--muted); font-weight: 400; font-style: italic; }

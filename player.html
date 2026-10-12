@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nano Wiki Race — Player</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="player">
+
+  <section id="ready-screen" class="screen">
+    <div class="challenge">
+      <div class="challenge-item">
+        <span class="label">Start</span>
+        <span id="start-title">—</span>
+      </div>
+      <span class="arrow">→</span>
+      <div class="challenge-item">
+        <span class="label">Get to</span>
+        <span id="target-title">—</span>
+      </div>
+    </div>
+    <p class="howto">Click the blue Wikipedia links to connect these in as few clicks as you can.</p>
+    <button id="start-btn">START</button>
+    <div>
+      <button id="open-display-btn" class="secondary-btn">Open info screen</button>
+    </div>
+    <div class="hint">Press SPACE to start · N skip · D reopen info screen</div>
+  </section>
+
+  <section id="countdown-screen" class="screen" hidden>
+    <div id="countdown-number">3</div>
+  </section>
+
+  <section id="playing-screen" class="screen" hidden>
+    <header id="playing-header">
+      <div class="target-chip">Get to: <strong id="playing-target">—</strong></div>
+      <div id="playing-timer">30</div>
+    </header>
+    <div id="article"></div>
+  </section>
+
+  <section id="end-screen" class="screen" hidden>
+    <div id="end-big" class="big">You did it! 🎉</div>
+    <div class="sub">Look at the info screen!</div>
+  </section>
+
+  <div id="toast"></div>
+
+  <footer class="player-footer">Articles from Wikipedia, available under CC BY-SA 4.0.</footer>
+
+  <script src="config.js"></script>
+  <script src="pairs.js"></script>
+  <script src="wiki.js"></script>
+  <script src="player.js"></script>
+</body>
+</html>
